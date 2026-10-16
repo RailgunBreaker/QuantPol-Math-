@@ -1,6 +1,8 @@
 # QuantPol Math — Native Interactive Web Edition
 
-A **standalone interactive HTML textbook**, based on *Mathematics for Quantitative Political Science — Fourth Edition* (October 2026). Designed to replace the old PDF-iframe companion at `https://railgunbreaker.icu/QuantPol-Math-/`.
+A **standalone interactive HTML textbook**, based on *Mathematics for Quantitative Political Science — Fourth Edition* (October 2026). Replaces the old PDF-iframe companion.
+
+**Live site: <https://quantpol.railgunbreaker.icu/>**
 
 ## What changed
 
@@ -12,17 +14,23 @@ A **standalone interactive HTML textbook**, based on *Mathematics for Quantitati
 - Mark lesson sections as studied, track chapter completion, save notes, answer exercises, export/import progress and switch between light/dark themes.
 - Responsive and deployable from any repository subfolder via GitHub Pages, Cloudflare Pages, Netlify, or other static hosting. No backend or npm build required.
 
-## Deployment to existing GitHub Pages repository
+## Deployment
 
-The live project URL suggests repository `QuantPol-Math-`. To replace the old edition:
+The site is served by GitHub Pages from `main` / `(root)` at its own subdomain, `quantpol.railgunbreaker.icu`, declared in the `CNAME` file.
 
-1. Back up or commit the previous edition first.
-2. Upload **the contents of this ZIP**, not the containing directory, to the existing repository root. Overwrite old `index.html`, `app.js`, `style.css`, `data/content.json`, and add `data/book.json` and all `assets/equations/*.png`.
-3. Delete the obsolete `assets/textbook.pdf` (optional if you want to retain a separate archival copy; the new web app does not reference it).
-4. Ensure **Settings → Pages → Build and deployment** uses your desired branch and `/(root)`.
-5. After GitHub Pages completes deployment, hard-refresh or clear website cache if the old PDF view remains visible.
+It needs one DNS record in the `railgunbreaker.icu` zone:
 
-Custom domains and `/QuantPol-Math-/` subpaths work because every asset URL is relative.
+```text
+quantpol   CNAME   railgunbreaker.github.io
+```
+
+Then wait for **Settings → Pages** to report the domain as verified and finish issuing the TLS certificate.
+
+### Why not `railgunbreaker.icu/QuantPol-Math-/`
+
+That URL cannot serve this project. `railgunbreaker.icu` resolves to CloudFront in front of an S3 bucket holding a different site, so the path returns an `AccessDenied` XML error. `railgunbreaker.github.io/QuantPol-Math-/` does not work either: the `RailgunBreaker.github.io` repository sets `railgunbreaker.icu` as its Pages custom domain, so GitHub 301-redirects every project path to that same dead AWS path. A per-repository custom domain bypasses both hops.
+
+Every asset URL in the app is relative, so the files also serve correctly from a domain root, a repository subpath, or any other static host (Cloudflare Pages, Netlify) with no build step.
 
 ## Preview locally
 
@@ -51,6 +59,7 @@ index.html              Responsive website shell
 app.js                  Interactive learning engine and visual labs
 style.css               Light/dark theme, textbook reading styles
 .nojekyll               Disable GitHub's Jekyll processing
+CNAME                   GitHub Pages custom domain (quantpol.railgunbreaker.icu)
 data/content.json       Question bank, answer key, worked solutions
  data/book.json         Native lesson content and reference sections
 assets/equations/       Cropped high-resolution vector-derived source formulas and figures
