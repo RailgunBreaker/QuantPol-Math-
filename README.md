@@ -1,52 +1,57 @@
-# QuantPol Math — Interactive Fourth Edition
+# QuantPol Math — Native Interactive Web Edition
 
-An interactive, static GitHub Pages companion to **Mathematics for Quantitative Political Science — Fourth Edition**. Based on the uploaded 213-page book (October 2026).
+A **standalone interactive HTML textbook**, based on *Mathematics for Quantitative Political Science — Fourth Edition* (October 2026). Designed to replace the old PDF-iframe companion at `https://railgunbreaker.icu/QuantPol-Math-/`.
 
-## Features
+## What changed
 
-- 33 chapters with embedded **original PDF pages**, preserving equations, diagrams, examples, and research context.
-- Clickable multiple-choice **chapter checkpoints and practice questions** with answer feedback and explanatory worked solutions where successfully extracted from the book.
-- Seven cumulative reviews and a 24-question final exam (see extraction caveat below).
-- Five browser-based explorations: normal curve, Bayes, OLS, DiD, and cumulative abnormal returns.
-- Live Z-score calculator and standard normal reference table; searchable compact formula shelf and link to complete Formula Atlas.
-- Notes, answers and chapter completion tracked locally (localStorage). Export/import progress as JSON. Mobile-responsive layout and dark theme.
-- **No build tools, hosting service, API key, analytics or database required.**
+- **NO PDF viewer** and no embedded PDF dependency. The 33 lessons, preface, original worked solutions, glossary, detailed Formula Atlas and Z-table guide appear directly as web pages.
+- Textbook paragraphs, headings, research examples, methodological cautions and sample code are readable, searchable, selectable HTML.
+- PDF equations involving stacked fractions, symbols or matrices are separately clipped **original typeset image assets** to prevent incorrect mathematical transcription. They are click-to-inspect with contextual text; they are not individually editable formula engines.
+- Original source diagrams are reproduced where identifiable; **13 live labs** provide editable mathematical demonstrations, covering derivatives, integration, Bayes, normal distributions, OLS, DiD, CAR, matrices, sampling, optimization, hypothesis testing, AR(1), and strategic games.
+- **277 multiple-choice questions**, seven reviews and the final examination. Answers and detailed explanations are displayed after each choice.
+- Mark lesson sections as studied, track chapter completion, save notes, answer exercises, export/import progress and switch between light/dark themes.
+- Responsive and deployable from any repository subfolder via GitHub Pages, Cloudflare Pages, Netlify, or other static hosting. No backend or npm build required.
+
+## Deployment to existing GitHub Pages repository
+
+The live project URL suggests repository `QuantPol-Math-`. To replace the old edition:
+
+1. Back up or commit the previous edition first.
+2. Upload **the contents of this ZIP**, not the containing directory, to the existing repository root. Overwrite old `index.html`, `app.js`, `style.css`, `data/content.json`, and add `data/book.json` and all `assets/equations/*.png`.
+3. Delete the obsolete `assets/textbook.pdf` (optional if you want to retain a separate archival copy; the new web app does not reference it).
+4. Ensure **Settings → Pages → Build and deployment** uses your desired branch and `/(root)`.
+5. After GitHub Pages completes deployment, hard-refresh or clear website cache if the old PDF view remains visible.
+
+Custom domains and `/QuantPol-Math-/` subpaths work because every asset URL is relative.
 
 ## Preview locally
 
-Do not open `index.html` with `file://` (the browser may block loading JSON). Use:
+Run a local web server:
 
 ```bash
-cd quantpol-math-site
 python -m http.server 8000
 ```
 
-Visit http://localhost:8000/ .
+Open `http://localhost:8000/` in your browser. Opening the HTML directly with `file://` can prevent browsers from fetching JSON files.
 
-## Deploy to GitHub Pages
+## Progress compatibility
 
-1. Create a new repository, for example `quantpol-math`.
-2. Upload everything **inside** this folder to the repository root (including `assets/textbook.pdf`, `data/content.json`, and `.nojekyll`).
-3. In the repository choose **Settings → Pages → Build and deployment → Deploy from a branch**, select `main` and `/(root)`, then save.
-4. Open `https://YOUR-USERNAME.github.io/quantpol-math/` after GitHub reports a successful deployment.
+Both the previous version and this version use `quantpol-v4-progress` in browser localStorage. Your saved answers, chapter completion and notes are retained on the **same origin and browser profile** when overwriting the previous deployed files. Progress is not synced across devices; use Export/Import JSON.
 
-The site uses relative URLs, so it works both for `username.github.io` and a project repository subdirectory.
+## Source and mathematical precision
 
-## Accuracy and limitations
+The original 213-page PDF is the textual and mathematical source. PDF text extraction can scramble inline mathematical superscripts, long answer choices, and some table layouts, so complex display mathematics is retained as image snippets. The original source PDF is not republished as a viewer. Some visual layout and tables were reconstructed from extracted text and should be checked against the source before public academic distribution. The five factor/event-study examples and the added live experiments are **synthetic pedagogical illustrations**, never empirical observations.
 
-The **original PDF is the definitive source** for every theorem, question, equation, and worked solution. The text extraction from PDF into interactive HTML can flatten superscripts, line breaks, and matrix layouts. If an option or explanation looks odd, cross-check the corresponding original PDF page. The original 33 chapter checkpoint/practice exercises are integrated, as are the cumulative assessments; a small number of PDF questions may not appear in the quiz due to complex source typesetting. Interactive labs illustrate assumptions with simulated values and should not be described as empirical findings. Content is browser-only; progress does not synchronize across devices without exporting/importing it.
-
-This is a learning companion and **not** a complete semantic LaTeX/HTML rewrite of all 213 pages. It preserves the full textbook in the embedded PDF reader instead. Public GitHub Pages repositories expose the PDF and site to the public. Use a private/local host instead if the book should remain private.
+This is a substantial native-web conversion, **not** a promise that each of the hundreds of printed formulas has its own independently parameterized simulation. Source-style equations are individually inspectable; 13 dedicated graphical labs are truly recalculated from user inputs. No automatic AI assistant, server-side grading, or cloud account is required.
 
 ## Files
 
+```text
+index.html              Responsive website shell
+app.js                  Interactive learning engine and visual labs
+style.css               Light/dark theme, textbook reading styles
+.nojekyll               Disable GitHub's Jekyll processing
+data/content.json       Question bank, answer key, worked solutions
+ data/book.json         Native lesson content and reference sections
+assets/equations/       Cropped high-resolution vector-derived source formulas and figures
 ```
-index.html           website shell
-style.css            responsive design
-app.js               quizzes, local progress, visual labs, navigation
-assets/textbook.pdf  unmodified original fourth edition
-data/content.json    extracted questions, answers and chapter index
-.nojekyll            disables Jekyll processing
-```
-
-No package installation or build step is needed.
